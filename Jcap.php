@@ -1,5 +1,5 @@
 <?php
-// Jcap — Simplified captcha generator (based on kcaptcha projeca version 2.0t: http://captcha.ru/kcaptcha/)
+// Jcap — Simplified captcha generator (based on kcaptcha project version 2.0: http://captcha.ru/kcaptcha/)
 //   Copyleft 2011, Bohdan <jeteir@gmail.com>
 
 
@@ -29,31 +29,34 @@ interface iJcap
 	public function generate();
 	public function getKeyString();
 	public function save($fileName = null);
+	public function setBlackNoiseDensity($density);
+	public function setWaveAmplitude($amplitude);
+	public function setWhiteNoiseDensity($density);
 }
 
 class Jcap implements iJcap
 {
-	private $allowedAlphabet = '23456789abcdegikpqsvxyz';
-	private $alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
+	protected $allowedAlphabet = '23456789abcdegikpqsvxyz';
+	protected $alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
 
-	private $blackDensity = 0.0333;
+	protected $blackDensity = 0.0333;
 
-	private $captcha;
+	protected $captcha;
 
-	private $captchaHeight = 80;
-	private $captchaWidth = 160;
+	protected $captchaHeight = 80;
+	protected $captchaWidth = 160;
 
-	private $font;
-	private $fontHeight;
-	private $fontMetrics;
-	private $fontWidth;
+	protected $font;
+	protected $fontHeight;
+	protected $fontMetrics;
+	protected $fontWidth;
 
-	private $keyString;
-	private $length;
+	protected $keyString;
+	protected $length;
 
-	private $verticalAmplitude = 8;
+	protected $verticalAmplitude = 8;
 
-	private $whiteDensity = 0.1666;
+	protected $whiteDensity = 0.1666;
 
 	public function __construct($min = 5, $max = 7)
 	{
@@ -85,8 +88,6 @@ class Jcap implements iJcap
 		$this->fillNoise($x);
 
 		$this->fillWave($x / 2);
-
-		return false;
 	}
 
 	public function getKeyString()
@@ -109,6 +110,21 @@ class Jcap implements iJcap
 		header("Content-Type: image/x-png");
 
 		imagepng($this->result);
+	}
+
+	public function setBlackNoiseDensity($density)
+	{
+		$this->blackDensity = $density;
+	}
+
+	public function setWaveAmplitude($amplitude)
+	{
+		$this->verticalAmplitude = $amplitude;
+	}
+
+	public function setWhiteNoiseDensity($density)
+	{
+		$this->whiteDensity = $density;
 	}
 
 	protected function drawText()
