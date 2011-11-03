@@ -86,8 +86,6 @@ class Jcap implements iJcap
 
 		$this->fillWave($x / 2);
 
-		imagepng($this->result);
-
 		return false;
 	}
 
