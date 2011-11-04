@@ -28,7 +28,7 @@ interface iJcap
 {
 	public function generate();
 	public function getKeyString();
-	public function save($fileName = null);
+	public function save($fileName = null, $noHeaders = false);
 	public function setBlackNoiseDensity($density);
 	public function setWaveAmplitude($amplitude);
 	public function setWhiteNoiseDensity($density);
@@ -95,7 +95,7 @@ class Jcap implements iJcap
 		return $this->keyString;
 	}
 
-	public function save($fileName = null)
+	public function save($fileName = null, $noHeaders = false)
 	{
 		if (null != $fileName) {
 			imagepng($this->result, $fileName);
@@ -103,11 +103,13 @@ class Jcap implements iJcap
 			return;
 		}
 
-		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); 
-		header('Cache-Control: no-store, no-cache, must-revalidate'); 
-		header('Cache-Control: post-check=0, pre-check=0', FALSE); 
-		header('Pragma: no-cache');
-		header("Content-Type: image/x-png");
+		if (false == $noHeaders) {
+			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); 
+			header('Cache-Control: no-store, no-cache, must-revalidate'); 
+			header('Cache-Control: post-check=0, pre-check=0', FALSE); 
+			header('Pragma: no-cache');
+			header("Content-Type: image/x-png");
+		}
 
 		imagepng($this->result);
 	}
