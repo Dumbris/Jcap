@@ -75,8 +75,16 @@ class Jcap implements iJcap
 
 	public function __destruct()
 	{
-		imagedestroy($this->captcha);
-		imagedestroy($this->result);
+        if(isset($this->captcha))
+        {
+            imagedestroy($this->captcha);
+        }
+
+        if(isset($this->result))
+        {
+            imagedestroy($this->result);
+        }
+
 	}
 
 	public function generate()
